@@ -1,0 +1,15 @@
+first_comment:
+  id: 1000
+  real_person_id: 10 # kasia
+  book_id: 100
+  comment: First Comment
+second_comment:
+  id: 2000
+  real_person_id: 10 # kasia
+  book_id: 100
+  comment: Second Comment
+third_comment:
+  id: 3000
+  real_person_id: 20 # chris
+  book_id: 200
+  comment: Third Comment

@@ -1,0 +1,8 @@
+first_book:
+  id: 100
+  user_id: 1 # jacob
+  title: First Book
+second_book:
+  id: 200
+  user_id: 2 # mike 
+  title: Second Book

@@ -1,0 +1,4 @@
+test:
+  adapter: sqlite3
+  database: ar_simple_ownership_plugin_test.sqlite3
+  timeout: 5000
