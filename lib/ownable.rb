@@ -8,17 +8,6 @@ module Fuzziness #:nodoc:
 
       def self.included(base) #:nodoc:
         base.extend(ClassMethods)
-        base.class_eval do
-          #          # Should ActiveRecord record ownerships? Defaults to true.
-          #          class_inheritable_accessor  :record_ownership
-          #          self.record_ownership = true
-          #
-          #          # Which class is responsible for ownerships? Defaults to :user.
-          #          class_inheritable_accessor  :owner_class_name
-          #
-          #          # What column should be used for the owner id? Defaults to :user_id.
-          #          class_inheritable_accessor  :owner_model_attribute
-        end
       end
 
       module ClassMethods #:nodoc:
@@ -38,13 +27,12 @@ module Fuzziness #:nodoc:
           
           class_eval do
             include Fuzziness::ArOwnership::Ownable::InstanceMethods
+            
             # Should ActiveRecord record ownerships? Defaults to true.
             cattr_accessor  :record_ownership
             self.record_ownership = true
-
             # Which class is responsible for ownerships? Defaults to :user.
             cattr_accessor  :owner_class_name
-
             # What column should be used for the owner id? Defaults to :user_id.
             cattr_accessor :owner_model_attribute
           end

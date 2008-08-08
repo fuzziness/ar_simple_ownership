@@ -18,13 +18,6 @@ module Fuzziness #:nodoc:
         # Used to set the owner for a particular request. See the Ownership module for more
         # details on how to use this method.
         def owner=(object)
-          # object_owner = if object.is_a?(ActiveRecord::Base)
-          #   object.send("#{object.class.primary_key}".to_sym)
-          # else
-          #  object
-          # end
-          #
-          # Thread.current["#{self.to_s.downcase}_#{self.object_id}_owner"] = object_owner
           Thread.current["#{self.to_s.downcase}_#{self.object_id}_owner"] = object
         end
 

@@ -11,6 +11,10 @@ module Fuzziness #:nodoc:
     module Manager
       def self.included(base) #:nodoc:
         base.extend(ClassMethods)
+#        base.class_eval do
+#          # For which class am I managing ownerships? Defaults to :user.
+#          class_inheritable_accessor :owner_class
+#        end
       end
 
       module ClassMethods #:nodoc:
@@ -25,14 +29,13 @@ module Fuzziness #:nodoc:
         # The method will automatically setup all the associations, and create <tt>before_save</tt>
         # and <tt>before_create</tt> filters for record the ownership.
         def manage_ownership(options={})
+          # FIXME check why disallow multiple calls fails
           # don't allow multiple calls 
-          # FIXME check why fails
           #return if self.included_modules.include?(Fuzziness::ArOwnership::Manager::InstanceMethods)
                     
           class_eval do
-            # For which class am I managing ownerships? Defaults to :user.
             cattr_accessor :owner_class
-
+            
             include Fuzziness::ArOwnership::Manager::InstanceMethods
             
             before_filter  :set_owner
@@ -55,10 +58,6 @@ module Fuzziness #:nodoc:
 
           # FIXME store klass with path          
           self.owner_class = klass
-          puts self.owner_class.inspect
-          
-          owner_class = klass
-          puts owner_class.inspect
         end
       end
       
@@ -74,8 +73,6 @@ module Fuzziness #:nodoc:
         # your own implementation of this method to the private section of
         # the controller where you are including the Ownership module.
         def set_owner
-          puts owner_class.owner
-          
           owner_class.owner= get_current_owner
         end
 
@@ -85,15 +82,13 @@ module Fuzziness #:nodoc:
         # method to the private section of the controller where you are including the
         # Ownership module.
         def reset_owner
-          self.owner_class.reset_owner
+          owner_class.reset_owner
         end
 
         # The <tt>get_current_owner</tt> method as implemented here assumes that
         # RestfulAutentication plugin is being used.
         def get_current_owner
-          puts "current_#{self.class.owner_class.name.underscore}"
-          
-          self.send "current_#{self.class.owner_class.name.underscore}".to_sym
+          self.send "current_#{owner_class.name.underscore}".to_sym
         end
       end
     end
