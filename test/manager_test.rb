@@ -22,8 +22,9 @@ class ManagerTests < Test::Unit::TestCase #:nodoc:
     # ManagerController.reload!
     load( "controllers/manager_controller.rb")
     @controller = ManagerController.new
-    User.owner=nil
-    Person.owner= nil
+    @controller.owner_class= nil
+#    User.owner=nil
+#    Person.owner= nil
   end
   
   def test_class_methods

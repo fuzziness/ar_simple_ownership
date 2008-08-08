@@ -11,10 +11,10 @@ module Fuzziness #:nodoc:
     module Manager
       def self.included(base) #:nodoc:
         base.extend(ClassMethods)
-#        base.class_eval do
-#          # For which class am I managing ownerships? Defaults to :user.
-#          class_inheritable_accessor :owner_class
-#        end
+        base.class_eval do
+          # For which class am I managing ownerships? Defaults to :user.
+          class_inheritable_accessor :owner_class
+        end
       end
 
       module ClassMethods #:nodoc:
@@ -34,7 +34,7 @@ module Fuzziness #:nodoc:
           #return if self.included_modules.include?(Fuzziness::ArOwnership::Manager::InstanceMethods)
                     
           class_eval do
-            cattr_accessor :owner_class
+#            cattr_accessor :owner_class
             
             include Fuzziness::ArOwnership::Manager::InstanceMethods
             
