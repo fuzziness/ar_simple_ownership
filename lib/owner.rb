@@ -6,15 +6,15 @@ module Fuzziness #:nodoc:
         base.extend(ClassMethods)
       end
 
-      module ClassMethods #:nodoc:
+      module ClassMethods
         def acts_as_owner
           # don't allow multiple calls 
-          return if self.included_modules.include?(Fuzziness::ArOwnership::Owner::InstanceMethods)
-          send(:extend, Fuzziness::ArOwnership::Owner::InstanceMethods)
+          return if self.included_modules.include?(Fuzziness::ArOwnership::Owner::ClassInstanceMethods)
+          send(:extend, Fuzziness::ArOwnership::Owner::ClassInstanceMethods)
         end
       end
 
-      module InstanceMethods #:nodoc:
+      module ClassInstanceMethods #:nodoc:
         # Used to set the owner for a particular request. See the Ownership module for more
         # details on how to use this method.
         def owner=(object)

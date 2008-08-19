@@ -3,14 +3,14 @@ module Fuzziness #:nodoc:
   module ArOwnership
     # Extends the functionality of ActiveRecord by automatically recording the model
     # responsible for creating the current object. See the Owner
-    # and Ownership modules for further documentation on how the entire process works.
+    # and Manager modules for further documentation on how the entire process works.
     module Ownable
 
       def self.included(base) #:nodoc:
         base.extend(ClassMethods)
       end
 
-      module ClassMethods #:nodoc:
+      module ClassMethods
         # This method is automatically called on for all classes that inherit from
         # ActiveRecord, but if you need to customize how the plug-in functions, this is the
         # method to use. Here's an example:
@@ -25,17 +25,15 @@ module Fuzziness #:nodoc:
           # don't allow multiple calls 
           return if self.included_modules.include?(Fuzziness::ArOwnership::Ownable::InstanceMethods)
           
-          class_eval do
-            include Fuzziness::ArOwnership::Ownable::InstanceMethods
+          include Fuzziness::ArOwnership::Ownable::InstanceMethods
             
-            # Should ActiveRecord record ownerships? Defaults to true.
-            cattr_accessor  :record_ownership
-            self.record_ownership = true
-            # Which class is responsible for ownerships? Defaults to :user.
-            cattr_accessor  :owner_class_name
-            # What column should be used for the owner id? Defaults to :user_id.
-            cattr_accessor :owner_model_attribute
-          end
+          # Should ActiveRecord record ownerships? Defaults to true.
+          class_inheritable_accessor  :record_ownership
+          self.record_ownership = true
+          # Which class is responsible for ownerships? Defaults to :user.
+          class_inheritable_accessor  :owner_class_name
+          # What column should be used for the owner id? Defaults to :user_id.
+          class_inheritable_accessor :owner_model_attribute
                   
           defaults = {
             :by => :user,
@@ -45,16 +43,14 @@ module Fuzziness #:nodoc:
           self.owner_class_name = defaults[:by].to_sym
           self.owner_model_attribute = defaults[:on].to_sym
 
-          class_eval do
-            belongs_to self.owner_class_name.to_s.underscore.to_sym, 
-              :class_name => self.owner_class_name.to_s.singularize.camelize,
-              :foreign_key => self.owner_model_attribute
+          belongs_to self.owner_class_name.to_s.underscore.to_sym, 
+            :class_name => self.owner_class_name.to_s.singularize.camelize,
+            :foreign_key => self.owner_model_attribute
                                  
-            before_create :set_owner_model_attribute
+          before_create :set_owner_model_attribute
             
-            named_scope "of_current_#{self.owner_class_symbol}".to_sym, 
-              lambda{ {:conditions => {self.owner_model_attribute => self.get_owner_value}} } 
-          end
+          named_scope "of_current_#{self.owner_class_symbol}".to_sym, 
+            lambda{ {:conditions => {self.owner_model_attribute => self.get_owner_value}} } 
         end
         
         # Temporarily allows you to turn ownership record off. For example:

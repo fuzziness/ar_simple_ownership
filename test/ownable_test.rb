@@ -117,4 +117,13 @@ class OwnableTests < Test::Unit::TestCase  #:nodoc:
     assert_equal :zero, MultipleCallModel.owner_model_attribute
   end
 
+  def test_multiple_scope_find_with_default_option
+    User.owner = users(:mike)
+    assert_equal [books(:second_book)], Book.of_current_user.with_title('Second Book').all
+  end
+
+  def test_multiple_scope_find_with_custom_option
+    Person.owner = people(:chris)
+    assert_equal [comments(:third_comment)], Comment.of_current_person.with_comment('Third Comment').all
+  end
 end

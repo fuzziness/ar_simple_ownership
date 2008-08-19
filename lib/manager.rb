@@ -11,13 +11,9 @@ module Fuzziness #:nodoc:
     module Manager
       def self.included(base) #:nodoc:
         base.extend(ClassMethods)
-        base.class_eval do
-          # For which class am I managing ownerships? Defaults to :user.
-          class_inheritable_accessor :owner_class
-        end
       end
 
-      module ClassMethods #:nodoc:
+      module ClassMethods
         # This method is automatically called on for all classes that inherit from
         # ActiveRecord, but if you need to customize how the plug-in functions, this is the
         # method to use. Here's an example:
@@ -29,18 +25,14 @@ module Fuzziness #:nodoc:
         # The method will automatically setup all the associations, and create <tt>before_save</tt>
         # and <tt>before_create</tt> filters for record the ownership.
         def manage_ownership(options={})
-          # FIXME check why disallow multiple calls fails
-          # don't allow multiple calls 
-          #return if self.included_modules.include?(Fuzziness::ArOwnership::Manager::InstanceMethods)
-                    
-          class_eval do
-#            cattr_accessor :owner_class
+          return if self.included_modules.include?(Fuzziness::ArOwnership::Manager::InstanceMethods)
             
-            include Fuzziness::ArOwnership::Manager::InstanceMethods
+          include Fuzziness::ArOwnership::Manager::InstanceMethods 
+          
+          class_inheritable_accessor :owner_class
             
-            before_filter  :set_owner
-            after_filter   :reset_owner            
-          end
+          before_filter  :set_owner
+          after_filter   :reset_owner            
           
           defaults  = {
             :for => :user,
@@ -61,7 +53,7 @@ module Fuzziness #:nodoc:
         end
       end
       
-      module InstanceMethods #:nodoc:
+      module InstanceMethods
         
         private
         

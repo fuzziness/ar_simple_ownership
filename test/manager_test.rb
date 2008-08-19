@@ -20,55 +20,52 @@ class ManagerTests < Test::Unit::TestCase #:nodoc:
 
   def setup
     # ManagerController.reload!
-    load( "controllers/manager_controller.rb")
+    Dependencies.explicitly_unloadable_constants = 'ManagerController'
+    Dependencies.remove_unloadable_constants!
+    load("controllers/manager_controller.rb")
+
     @controller = ManagerController.new
-    @controller.owner_class= nil
-#    User.owner=nil
-#    Person.owner= nil
   end
   
-  def test_class_methods
+  def test_class_method_manage_ownership
     assert ManagerController.respond_to?('manage_ownership')
+  end
+
+  def test_class_method_owner_class
+    assert !ManagerController.respond_to?('owner_class')
   end
   
   def test_manage_ownership_with_default_option
-    assert_nil @controller.owner_class
     ManagerController.send 'manage_ownership'
     assert_equal User, @controller.owner_class
   end
   
   def test_manage_ownership_with_symbol_camelcase
-    assert_nil @controller.owner_class
     ManagerController.send 'manage_ownership', :for => :camelized_model
     assert_equal CamelizedModel, @controller.owner_class
   end
   
   def test_manage_ownership_with_string_camelcase
-    assert_nil @controller.owner_class
     ManagerController.send 'manage_ownership', :for => 'camelized_model'
     assert_equal CamelizedModel, @controller.owner_class  
   end
   
   def test_manage_ownership_with_symbol
-    assert_nil @controller.owner_class
     ManagerController.send 'manage_ownership', :for => :person
     assert_equal Person, @controller.owner_class
   end
   
   def test_manage_ownership_with_string
-    assert_nil @controller.owner_class
     ManagerController.send 'manage_ownership', :for => 'Person'
     assert_equal Person, @controller.owner_class
   end
   
   def test_manage_ownership_with_constant
-    assert_nil @controller.owner_class
     ManagerController.send 'manage_ownership', :for => Person
     assert_equal Person, @controller.owner_class
   end
   
   def test_manage_ownership_fail_with_non_owner_class
-    assert_nil @controller.owner_class
     ex = assert_raise(ArgumentError) {
       ManagerController.send 'manage_ownership', :for => :integer
     }
@@ -76,7 +73,7 @@ class ManagerTests < Test::Unit::TestCase #:nodoc:
   end
   
   def test_set_owner
-    Person.owner= nil
+    Person.reset_owner
     assert_nil Person.owner
     ManagerController.send 'manage_ownership', :for => :person
     @controller.public_set_owner
@@ -101,10 +98,9 @@ class ManagerTests < Test::Unit::TestCase #:nodoc:
     assert_equal people(:test), @controller.public_get_current_owner
   end
 
-  # FIXME check why disallow multiple calls fails
-  # def test_disallow_multiple_calls
-  #  ManagerController.send 'manage_ownership', :for => 'camelized_model'
-  #  ManagerController.send 'manage_ownership', :for => :person
-  #  assert_equal CamelizedModel, @controller.owner_class  
-  # end  
+  def test_disallow_multiple_calls
+    ManagerController.send 'manage_ownership', :for => 'camelized_model'
+    ManagerController.send 'manage_ownership', :for => :person
+    assert_equal CamelizedModel, @controller.owner_class  
+  end  
 end

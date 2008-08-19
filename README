@@ -5,11 +5,15 @@ The ArSimpleOwnership Plugin extends ActiveRecord::Base to add automatic updatin
 of an ownership attribute of your models in much the same way that the 
 ActiveRecord::Timestamp module updates created(at/on) and updated(at/on) attributes.
 
-Needs Rails 2.1+
+Needs Rails 2.1
 
 
+Todo
+====
 
-== Todo
+* Nested named_scope bug! -> owner = nil on select
+
+* Every find call adds automatically owner scope
 
 * Store classes with full path
 
@@ -17,23 +21,36 @@ Needs Rails 2.1+
 
 * Support for Composite Primary Keys
 
-* don't allow multiple calls of manage_ownership 
 
+Install
+=======
 
-== Uninstall
-
-Uninstalling the plugin can be done using the built in Rails plugin script. 
+Installing the plugin can be done using the built in Rails plugin script. 
 Issue the following command from the root of your application:
+
+  script/plugin install ar_simple_ownership
+
+
+Uninstall
+=========
 
   script/plugin remove ar_simple_ownership
 
 
-== Documentation
+Example
+=======
+
+@TODO
+
+
+Documentation
+=============
 
 RDoc has been run on the plugin directory and is available in the doc directory.
 
 
-== Running Unit Tests
+Running Unit Tests
+==================
 
 There are extensive unit tests in the "test" directory of the plugin. These test can be run
 individually by executing the following command from the ar_simple_ownership directory:
@@ -46,7 +63,8 @@ individually by executing the following command from the ar_simple_ownership dir
  ruby test/manager_test.rb
 
 
-== Bugs & Feedback
+Bugs & Feedback
+===============
 
 Bug reports and feedback are welcome via my email:michele.franzin@gmail.com address. 
 I also encouraged everyone to clone the git repository and make modifications.
@@ -54,10 +72,11 @@ I'll be more than happy to merge any changes from other people's branches that
 would be beneficial to the whole project.
 
 
-== Credits and Special Thanks
+Credits and Special Thanks
+==========================
 
 The original idea for this plugin came from Delynn Berry's 
-{userstamp plugin}[http://delynnberry.com/projects/userstamp].
+"userstamp plugin":http://delynnberry.com/projects/userstamp/ 
 
 
 Copyright (c) 2008 Michele Franzin, released under the MIT license
