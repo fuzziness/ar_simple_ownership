@@ -31,8 +31,9 @@ module Fuzziness #:nodoc:
           
           class_inheritable_accessor :owner_class
             
-          before_filter  :set_owner
-          after_filter   :reset_owner            
+          # before_filter usage for object (pre)loading is safe 
+          prepend_before_filter  :set_owner
+          prepend_after_filter   :reset_owner            
           
           defaults  = {
             :for => :user,
@@ -65,7 +66,7 @@ module Fuzziness #:nodoc:
         # your own implementation of this method to the private section of
         # the controller where you are including the Ownership module.
         def set_owner
-          owner_class.owner= get_current_owner
+          self.owner_class.owner= get_current_owner
         end
 
         # The <tt>reset_owner</tt> method as implemented here assumes that a
@@ -74,7 +75,7 @@ module Fuzziness #:nodoc:
         # method to the private section of the controller where you are including the
         # Ownership module.
         def reset_owner
-          owner_class.reset_owner
+          self.owner_class.reset_owner
         end
 
         # The <tt>get_current_owner</tt> method as implemented here assumes that

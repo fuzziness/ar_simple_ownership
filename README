@@ -11,8 +11,6 @@ Needs Rails 2.1
 Todo
 ====
 
-* Nested named_scope bug! -> owner = nil on select
-
 * Every find call adds automatically owner scope
 
 * Store classes with full path

@@ -3,28 +3,20 @@ $:.unshift(File.dirname(__FILE__))
 require 'helpers/test_helper'
 require 'models/user'
 require 'models/person'
-require 'models/book'
 require 'models/camelized_model'
 require 'controllers/manager_controller'
 
 class ManagerTests < Test::Unit::TestCase #:nodoc:
   fixtures :users, :people
 
-  module ::ActionController
-    class Base
-      private
-      def current_person; Person.find(92634); end        
-      def current_user; User.find(15464); end        
-    end
-  end
-
   def setup
     # ManagerController.reload!
     Dependencies.explicitly_unloadable_constants = 'ManagerController'
     Dependencies.remove_unloadable_constants!
     load("controllers/manager_controller.rb")
-
     @controller = ManagerController.new
+    Person.reset_owner
+    User.reset_owner
   end
   
   def test_class_method_manage_ownership
@@ -98,7 +90,7 @@ class ManagerTests < Test::Unit::TestCase #:nodoc:
     assert_equal people(:test), @controller.public_get_current_owner
   end
 
-  def test_disallow_multiple_calls
+  def test_disallow_multiple_calls_of_manage_ownership
     ManagerController.send 'manage_ownership', :for => 'camelized_model'
     ManagerController.send 'manage_ownership', :for => :person
     assert_equal CamelizedModel, @controller.owner_class  
