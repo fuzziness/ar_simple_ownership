@@ -1,7 +1,6 @@
 $:.unshift(File.dirname(__FILE__))
 
 require 'helpers/test_helper'
-require 'models/user'
 
 class OwnerTests < Test::Unit::TestCase  #:nodoc:
   fixtures :users

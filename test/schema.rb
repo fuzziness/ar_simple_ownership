@@ -9,7 +9,7 @@ ActiveRecord::Schema.define(:version => 0) do
     t.timestamp
   end
 
-  # Books are created and updated by People
+  # Books are created and updated by User
   create_table :books, :force => true do |t|
     t.string :user_id
     t.string :title

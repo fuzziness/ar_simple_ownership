@@ -1,15 +1,6 @@
 $:.unshift(File.dirname(__FILE__))
 
 require 'helpers/test_helper'
-require 'models/user'
-require 'models/book'
-require 'controllers/books_controller'
-
-ActionController::Routing::Routes.draw do |map|
-  map.connect  ':controller/:action/:id'
-end
-
-# defaults options
 
 class BooksControllerTest < Test::Unit::TestCase
   fixtures :users, :books

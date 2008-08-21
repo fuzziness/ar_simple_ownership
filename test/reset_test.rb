@@ -1,9 +1,6 @@
 $:.unshift(File.dirname(__FILE__))
 
 require 'helpers/test_helper'
-require 'models/person'
-require 'models/comment'
-require 'controllers/reset_controller'
 
 class ResetTests < Test::Unit::TestCase #:nodoc:
   fixtures :people, :comments

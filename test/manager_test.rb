@@ -1,10 +1,6 @@
 $:.unshift(File.dirname(__FILE__))
 
 require 'helpers/test_helper'
-require 'models/user'
-require 'models/person'
-require 'models/camelized_model'
-require 'controllers/manager_controller'
 
 class ManagerTests < Test::Unit::TestCase #:nodoc:
   fixtures :users, :people

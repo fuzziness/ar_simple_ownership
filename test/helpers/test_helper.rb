@@ -1,6 +1,5 @@
 $:.unshift(File.dirname(__FILE__) + '/../..')
 $:.unshift(File.dirname(__FILE__) + '/../../lib')
-schema_file = File.join(File.dirname(__FILE__), '..', 'schema.rb')
 
 require 'rubygems'
 require 'test/unit'
@@ -11,10 +10,26 @@ require 'action_controller'
 require 'action_controller/test_process'
 require 'init'
 
+require 'models/book'
+require 'models/comment'
+require 'models/user'
+require 'models/person'
+require 'models/camelized_model'
+require 'models/multiple_call_model'
+require 'controllers/books_controller'
+require 'controllers/comments_controller'
+require 'controllers/manager_controller'
+require 'controllers/reset_controller'
+
+ActionController::Routing::Routes.draw do |map|
+  map.connect  ':controller/:action/:id'
+end
+
 config = YAML::load(IO.read(File.join(File.dirname(__FILE__), '..', 'database.yml')))[ENV['DB'] || 'test']
 ActiveRecord::Base.configurations = config
 ActiveRecord::Base.establish_connection(config)
 
+schema_file = File.join(File.dirname(__FILE__), '..', 'schema.rb')
 load(schema_file) if File.exist?(schema_file)
 
 Test::Unit::TestCase.fixture_path = File.join(File.dirname(__FILE__), '..', 'fixtures')
@@ -26,6 +41,4 @@ class Test::Unit::TestCase #:nodoc:
   
   # Instantiated fixtures are slow, but give you @david where you otherwise would need people(:david)
   self.use_instantiated_fixtures  = true
-
-  # Add more helper methods to be used by all tests here...
 end

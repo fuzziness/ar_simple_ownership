@@ -1,11 +1,6 @@
 $:.unshift(File.dirname(__FILE__))
 
 require 'helpers/test_helper'
-require 'models/user'
-require 'models/person'
-require 'models/book'
-require 'models/comment'
-require 'models/multiple_call_model'
 
 class OwnableTests < Test::Unit::TestCase  #:nodoc:
   fixtures :users, :people, :books, :comments
