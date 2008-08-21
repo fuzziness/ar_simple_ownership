@@ -1,29 +1,36 @@
 module Fuzziness #:nodoc:
-  
-  module ArOwnership
-    # The Ownership module, when included into a controller, adds a before filter
-    # (named <tt>set_owner</tt>) and an after filter (name <tt>reset_owner</tt>).
-    # These methods assume a couple of things, but can be re-implemented in your
-    # controller to better suite your application.
-    #
-    # See the documentation for <tt>set_owner</tt> and <tt>reset_owner</tt> for
-    # specific implementation details.
+  module ArOwnership #:nodoc:
+    
+    # Extends the functionality of +ActionController+ by automatically recording the 
+    # currently logged user as owner.
+    # See the <tt>Owner</tt> and <tt>Ownable</tt> modules for further documentation
+    # on how the entire process works.
     module Manager
+      
       def self.included(base) #:nodoc:
         base.extend(ClassMethods)
       end
 
       module ClassMethods
-        # This method is automatically called on for all classes that inherit from
-        # ActiveRecord, but if you need to customize how the plug-in functions, this is the
-        # method to use. Here's an example:
+        # The method will automatically setup before and after filters for keeping
+        # track of ownership.
+        # These methods assume a couple of things, but can be re-implemented in your
+        # controller to better suite your application.
+        #
+        # See the documentation for <tt>set_owner</tt> and <tt>reset_owner</tt> for
+        # specific implementation details.
+        # 
+        # If you need to customize how the plug-in works, this is the method to use.
+        # 
+        # Here's an example:
         #
         #   class Post < ActiveRecord::Base
         #     manage_ownership :for => :person
         #   end
+        #   
+        # Options:
+        # <tt>for</tt>::       ownable model class (default: +User+)
         #
-        # The method will automatically setup all the associations, and create <tt>before_save</tt>
-        # and <tt>before_create</tt> filters for record the ownership.
         def manage_ownership(options={})
           return if self.included_modules.include?(Fuzziness::ArOwnership::Manager::InstanceMethods)
             
@@ -33,7 +40,7 @@ module Fuzziness #:nodoc:
             
           # before_filter usage for object (pre)loading is safe 
           prepend_before_filter  :set_owner
-          prepend_after_filter   :reset_owner            
+          append_after_filter   :reset_owner            
           
           defaults  = {
             :for => :user,
@@ -58,29 +65,26 @@ module Fuzziness #:nodoc:
         
         private
         
-        # The <tt>set_owner</tt> method as implemented here assumes a couple
-        # of things. First, that you are using a +User+ model as the owner
-        # and second that your controller has a <tt>get_current_owner</tt> method
-        # that contains the currently logged in owner. If either of these
-        # are not the case in your application you will want to manually add
-        # your own implementation of this method to the private section of
-        # the controller where you are including the Ownership module.
-        def set_owner
+        # Sets the current owner for the managed class. The method as implemented 
+        # here assumes that your controller has a <tt>get_current_owner</tt> method
+        # that contains the currently logged in owner.
+        def set_owner #:doc:
           self.owner_class.owner= get_current_owner
         end
 
-        # The <tt>reset_owner</tt> method as implemented here assumes that a
-        # +User+ model is being used as the owner. If this is not the case then
-        # you will need to manually add your own implementation of +get_current_owner+ 
-        # method to the private section of the controller where you are including the
-        # Ownership module.
-        def reset_owner
+        # Resets the currently logged in owner for the managed class.
+        def reset_owner #:doc:
           self.owner_class.reset_owner
         end
 
-        # The <tt>get_current_owner</tt> method as implemented here assumes that
-        # RestfulAutentication plugin is being used.
-        def get_current_owner
+        # Returns the currently logged in owner for the managed class. The method 
+        # as implemented here assumes that a RestfulAutentication generated +User+
+        # model is being used as the owner. 
+        # If this is not the case then
+        # you will need to manually add your own implementation of +get_current_owner+ 
+        # method to the private section of the controller where you are including the
+        # Manager module.
+        def get_current_owner #:doc:
           self.send "current_#{owner_class.name.underscore}".to_sym
         end
       end

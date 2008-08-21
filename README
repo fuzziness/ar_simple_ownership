@@ -1,5 +1,5 @@
 
-== ArSimpleOwnership (v 0.1.0)
+== ArSimpleOwnership (v 0.2.0)
 
 The ArSimpleOwnership Plugin extends ActiveRecord::Base to add automatic updating
 of an ownership attribute of your models in much the same way that the 
@@ -8,20 +8,7 @@ ActiveRecord::Timestamp module updates created(at/on) and updated(at/on) attribu
 Needs Rails 2.1
 
 
-Todo
-====
-
-* Every find call adds automatically owner scope
-
-* Store classes with full path
-
-* Customizable owner id column
-
-* Support for Composite Primary Keys
-
-
-Install
-=======
+=== Install
 
 Installing the plugin can be done using the built in Rails plugin script. 
 Issue the following command from the root of your application:
@@ -29,52 +16,36 @@ Issue the following command from the root of your application:
   script/plugin install ar_simple_ownership
 
 
-Uninstall
-=========
+=== Uninstall
 
   script/plugin remove ar_simple_ownership
 
 
-Example
-=======
+=== Example
 
 @TODO
 
 
-Documentation
-=============
+=== Bugs & Feedback
 
-RDoc has been run on the plugin directory and is available in the doc directory.
-
-
-Running Unit Tests
-==================
-
-There are extensive unit tests in the "test" directory of the plugin. These test can be run
-individually by executing the following command from the ar_simple_ownership directory:
-
- ruby test/owner_test.rb
- ruby test/ownable_test.rb
- ruby test/manager_test.rb
- ruby test/books_controller_test.rb
- ruby test/comments_controller_test.rb
- ruby test/manager_test.rb
-
-
-Bugs & Feedback
-===============
-
-Bug reports and feedback are welcome via my email:michele.franzin@gmail.com address. 
+Bug reports and feedback are welcome via my email[michele.franzin@gmail.com] address.
 I also encouraged everyone to clone the git repository and make modifications.
 I'll be more than happy to merge any changes from other people's branches that 
 would be beneficial to the whole project.
 
 
-Credits and Special Thanks
-==========================
+=== Todo
+
+* Every find call adds automatically owner scope
+* Store classes with full path
+* Customizable owner id column
+* Support for Composite Primary Keys
+
+
+=== Credits and Special Thanks
 
 The original idea for this plugin came from Delynn Berry's 
-"userstamp plugin":http://delynnberry.com/projects/userstamp/ 
+{userstamp plugin}[http://delynnberry.com/projects/userstamp/]. 
 
 
-Copyright (c) 2008 Michele Franzin, released under the MIT license
+Copyright (c) 2008 Michele Franzin, released under the MIT license.

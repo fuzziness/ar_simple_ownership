@@ -1,20 +1,25 @@
 module Fuzziness #:nodoc:
-  module ArOwnership
-    # Owner model extension
+  module ArOwnership #:nodoc:
+    
+    # Extends the functionality of +ActiveRecord+ allowing a model to be owner for 
+    # other models instances.
+    # See the <tt>Ownable</tt> and <tt>Manager</tt> modules for further documentation
+    # on how the entire process works.
     module Owner
       def self.included(base) #:nodoc:
         base.extend(ClassMethods)
       end
 
       module ClassMethods
+        # Allows an active record to be owner for other models instances
         def acts_as_owner
           # don't allow multiple calls 
-          return if self.included_modules.include?(Fuzziness::ArOwnership::Owner::ClassInstanceMethods)
-          send(:extend, Fuzziness::ArOwnership::Owner::ClassInstanceMethods)
+          return if self.included_modules.include?(Fuzziness::ArOwnership::Owner::InstanceMethods)
+          extend Fuzziness::ArOwnership::Owner::InstanceMethods
         end
       end
 
-      module ClassInstanceMethods #:nodoc:
+      module InstanceMethods #:nodoc:
         # Used to set the owner for a particular request. See the Ownership module for more
         # details on how to use this method.
         def owner=(object)

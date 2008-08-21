@@ -1,9 +1,10 @@
 module Fuzziness #:nodoc:
-
-  module ArOwnership
-    # Extends the functionality of ActiveRecord by automatically recording the model
-    # responsible for creating the current object. See the Owner
-    # and Manager modules for further documentation on how the entire process works.
+  module ArOwnership #:nodoc:
+    
+    # Extends the functionality of +ActiveRecord+ by automatically recording the model
+    # responsible for creating the current object.
+    # See the <tt>Owner</tt> and <tt>Manager</tt> modules for further documentation
+    # on how the entire process works.
     module Ownable
 
       def self.included(base) #:nodoc:
@@ -11,22 +12,27 @@ module Fuzziness #:nodoc:
       end
 
       module ClassMethods
-        # This method is automatically called on for all classes that inherit from
-        # ActiveRecord, but if you need to customize how the plug-in functions, this is the
-        # method to use. Here's an example:
+        # Automatically setup model association, create <tt>before_save</tt>
+        # filter for record the ownership and <tt>named_scope</tt> for made search by owners.
+        # If you need to customize how the plug-in works, this is the method to use.
+        # 
+        # Here's an example:
         #
         #   class Post < ActiveRecord::Base
         #     ownable :by => :person, :on  => :create_user
         #   end
         #
-        # The method will automatically setup all the associations, and create <tt>before_save</tt>
-        # filter for record the ownership and <tt>named_scope</tt> or owner's selections.
+        # Options:
+        # <tt>by</tt>::        owner model class (default: +User+)
+        # <tt>on</tt>::        owner id column name (default: +user_id+)
+        # 
         def ownable(options={})
           # don't allow multiple calls 
           return if self.included_modules.include?(Fuzziness::ArOwnership::Ownable::InstanceMethods)
-          
+          #:stopdoc:
           include Fuzziness::ArOwnership::Ownable::InstanceMethods
-            
+          #:startdoc:
+         
           # Should ActiveRecord record ownerships? Defaults to true.
           class_inheritable_accessor  :record_ownership
           self.record_ownership = true
