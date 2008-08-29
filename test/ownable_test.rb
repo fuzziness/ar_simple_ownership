@@ -99,12 +99,12 @@ class OwnableTests < Test::Unit::TestCase  #:nodoc:
   
   def test_find_with_default_option
     User.owner = users(:mike)
-    assert_equal [books(:first_book), books(:second_book)], Book.find(:all)
+    assert_equal books(:first_book,:second_book), Book.find(:all)
   end
   
   def test_find_with_custom_option
     Person.owner = people(:kasia)
-    assert_equal [comments(:first_comment),comments(:second_comment),comments(:third_comment)], Comment.find(:all)
+    assert_equal comments(:first_comment,:second_comment,:third_comment), Comment.find(:all)
   end
   
   def test_disallow_multiple_calls

@@ -17,7 +17,7 @@ class ResetTests < Test::Unit::TestCase #:nodoc:
     assert_equal [], assigns(:comments)
     ResetController.send 'manage_ownership', :for => :person, :on => :real_person_id
     get :null_render
-    assert_equal [comments(:first_comment),comments(:second_comment)], assigns(:comments)
+    assert_equal comments(:first_comment,:second_comment), assigns(:comments)
   end
   
 end
