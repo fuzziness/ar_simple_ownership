@@ -1,0 +1,10 @@
+[29 Ago 2008] release 0.2.0
+
+* bugfix: fix filters order for nested resources
+* improved documentation
+* better test coverage and code cleanup
+* refactored mixins loading
+
+[21 Jul 2008] release 0.1.0
+
+* Initial version
