@@ -7,8 +7,8 @@ class ManagerTests < Test::Unit::TestCase #:nodoc:
 
   def setup
     # ManagerController.reload!
-    Dependencies.explicitly_unloadable_constants = 'ManagerController'
-    Dependencies.remove_unloadable_constants!
+    ActiveSupport::Dependencies.explicitly_unloadable_constants = 'ManagerController'
+    ActiveSupport::Dependencies.remove_unloadable_constants!
     load("controllers/manager_controller.rb")
     @controller = ManagerController.new
     Person.reset_owner

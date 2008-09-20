@@ -1,3 +1,7 @@
+[20 Sep 2008]
+
+* updated to rails 2.1.1
+
 [29 Ago 2008] release 0.2.0
 
 * bugfix: fix filters order for nested resources

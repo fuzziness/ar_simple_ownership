@@ -5,7 +5,7 @@ The ArSimpleOwnership Plugin extends ActiveRecord::Base to add automatic updatin
 of an ownership attribute of your models in much the same way that the 
 ActiveRecord::Timestamp module updates created(at/on) and updated(at/on) attributes.
 
-Needs Rails 2.1
+Needs Rails 2.1.1
 
 
 === Install
