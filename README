@@ -28,7 +28,11 @@ Issue the following command from the root of your application:
 
 === Bugs & Feedback
 
-Bug reports and feedback are welcome via my email[michele.franzin@gmail.com] address.
+If you would like to report a bug or request a new feature the bug tracker is 
+located at:
+
+   http://works.fuzziland.it
+
 I also encouraged everyone to clone the git repository and make modifications.
 I'll be more than happy to merge any changes from other people's branches that 
 would be beneficial to the whole project.
